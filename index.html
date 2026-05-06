@@ -331,7 +331,7 @@
 
         .intro-text {
             font-size: 1.1rem;
-            max-width: 800px;
+            max-width: 850px;
             margin-bottom: 4rem;
             color: rgba(255,255,255,0.9);
         }
@@ -388,19 +388,22 @@
         }
 
         .avatar {
-            width: 80px;
-            height: 80px;
+            width: 90px;
+            height: 90px;
             border-radius: 50%;
             border: 2px solid var(--taranis-gold);
             margin: 0 auto 1.5rem;
+            overflow: hidden; /* Important for the images */
+            background: var(--taranis-navy);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-family: var(--font-heading);
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--taranis-gold);
-            background: var(--taranis-navy);
+        }
+
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         .card h3 {
@@ -530,15 +533,6 @@
             z-index: 1;
         }
 
-        .video-content { position: relative; z-index: 2; text-align: center; }
-
-        .mute-btn {
-            position: absolute; bottom: 40px; right: 40px; z-index: 10;
-            background: rgba(248, 177, 29, 0.2); border: 1px solid var(--taranis-gold);
-            color: var(--taranis-gold); padding: 10px 20px; font-family: var(--font-heading);
-            font-size: 0.7rem; cursor: pointer; display: flex; align-items: center; gap: 10px;
-        }
-
         footer { background: #000d1a; border-top: 3px solid var(--taranis-gold); padding: 4rem 10% 2rem; }
         .footer-grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 4rem; margin-bottom: 4rem; }
         .footer-brand h4 { font-family: var(--font-heading); margin-bottom: 1rem; display: flex; align-items: center; gap: 10px; }
@@ -592,37 +586,68 @@
 
     <section id="about" class="section-container">
         <h2 class="section-title">WHO WE ARE</h2>
-        <p class="intro-text">Who We Are
-Taranis Racing is a five-member Irish STEM team competing in the 2025/26 F1 in Schools National Finals. We are the first team in our school's history to compete in this category.
-          
-Our team is structured into five specialized departments:
-          
-Team Management & Design Engineering
-          
-Aerodynamics & Manufacturing
-          
-Visual Effects & Creative Direction
-          
-Graphics & Livery Management
-          
-Sponsorship & Marketing
-          
-We engineered the Taranis TR-10 through iterative CAD design and CFD analysis, focusing on minimizing drag and maximizing structural integrity. Our project is defined by technical precision and a professional approach to STEM branding.
-          
-Fierce as thunder. Fast as lightning.</p>
+        <div class="intro-text">
+            <p style="margin-bottom: 20px;">
+                <strong>Taranis Racing</strong> is a five-member Irish STEM team competing in the 2025/26 F1 in Schools National Finals. We are the first team in our school's history to compete in this category.
+            </p>
+            <p style="margin-bottom: 20px; color: var(--taranis-gold); font-family: var(--font-heading); font-size: 0.9rem; letter-spacing: 1px;">
+                TEAM DEPARTMENTS:
+            </p>
+            <ul style="list-style: none; margin-bottom: 25px; padding-left: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 0.95rem;">
+                <li>• Team Management & Design</li>
+                <li>• Aerodynamics & Manufacturing</li>
+                <li>• Visual Effects & Creative Direction</li>
+                <li>• Graphics & Livery Management</li>
+                <li>• Sponsorship & Marketing</li>
+            </ul>
+            <p style="margin-bottom: 20px;">
+                We engineered the <strong>Taranis TR-10</strong> through iterative CAD design and CFD analysis, focusing on minimizing drag and maximizing structural integrity. Our project is defined by technical precision and a professional approach to STEM branding.
+            </p>
+            <p style="font-family: var(--font-heading); color: var(--taranis-gold); font-weight: 700;">
+                FIERCE AS THUNDER. FAST AS LIGHTNING.
+            </p>
+        </div>
+
         <div class="stats-grid">
             <div class="stat-item"><span class="stat-number" data-target="5">0</span><span class="stat-label">Team Members</span></div>
             <div class="stat-item"><span class="stat-number" data-target="2">0</span><span class="stat-label">National Qualifications</span></div>
             <div class="stat-item"><span class="stat-number" data-target="5">0</span><span class="stat-label">Sponsors Secured</span></div>
             <div class="stat-item"><span class="stat-number" data-target="1816" data-prefix="€">0</span><span class="stat-label">Total Budget Managed</span></div>
         </div>
+
         <div class="team-grid">
-            <div class="card"><div class="avatar">ZH</div><h3>Zain Hussain</h3><span class="role">Design Engineer & Team Manager</span><p class="bio">Mathematical and automotive design prowess. Oversees resources and leads car design.</p></div>
-            <div class="card"><div class="avatar">CM</div><h3>Conal McCarthy</h3><span class="role">Manufacturing Engineer</span><p class="bio">Specialises in aerodynamics and coding. Manages car development and components.</p></div>
-            <div class="card"><div class="avatar">KM</div><h3>Kien McCarthy</h3><span class="role">Visual Effects Artist</span><p class="bio">Immense knowledge in visual artifacts. The team's safety net for graphics.</p></div>
-            <div class="card"><div class="avatar">DO</div><h3>David O'Connor</h3><span class="role">Decals & Graphics Manager</span><p class="bio">Real car livery experience. Iterating designs and sponsor integration.</p></div>
-            <div class="card"><div class="avatar">AB</div><h3>Alex Buckley</h3><span class="role">Sponsorship & Marketing Manager</span><p class="bio">Publicity and branding expert. Keeps Taranis visible in the STEM world.</p></div>
+            <div class="card">
+                <div class="avatar"><img src="zain.heic" alt="Zain Hussain"></div>
+                <h3>Zain Hussain</h3>
+                <span class="role">Design Engineer & Team Manager</span>
+                <p class="bio">Mathematical and automotive design prowess. Oversees resources and leads car design.</p>
+            </div>
+            <div class="card">
+                <div class="avatar"><img src="conal.heic" alt="Conal McCarthy"></div>
+                <h3>Conal McCarthy</h3>
+                <span class="role">Manufacturing Engineer</span>
+                <p class="bio">Specialises in aerodynamics and coding. Manages car development and components.</p>
+            </div>
+            <div class="card">
+                <div class="avatar"><img src="kien.heic" alt="Kien McCarthy"></div>
+                <h3>Kien McCarthy</h3>
+                <span class="role">Visual Effects Artist</span>
+                <p class="bio">Immense knowledge in visual artifacts. The team's safety net for graphics.</p>
+            </div>
+            <div class="card">
+                <div class="avatar"><img src="david.heic" alt="David O'Connor"></div>
+                <h3>David O'Connor</h3>
+                <span class="role">Decals & Graphics Manager</span>
+                <p class="bio">Real car livery experience. Iterating designs and sponsor integration.</p>
+            </div>
+            <div class="card">
+                <div class="avatar"><img src="alex.heic" alt="Alex Buckley"></div>
+                <h3>Alex Buckley</h3>
+                <span class="role">Sponsorship & Marketing Manager</span>
+                <p class="bio">Publicity and branding expert. Keeps Taranis visible in the STEM world.</p>
+            </div>
         </div>
+
         <div class="sponsors-strip">
             <h4 class="sponsors-title">OUR PARTNERS</h4>
             <div class="sponsors-row">
@@ -659,8 +684,6 @@ Fierce as thunder. Fast as lightning.</p>
     <section id="track" class="video-section">
         <div id="video-background"></div>
         <div class="video-overlay"></div>
-        <div class="video-content">
-        </div>
         <button class="mute-btn" id="mute-toggle"><span id="mute-text">SOUND OFF</span></button>
     </section>
 
@@ -740,7 +763,6 @@ Fierce as thunder. Fast as lightning.</p>
             container.appendChild(renderer.domElement);
             scene.add(new THREE.AmbientLight(0x4040ff, 0.4), new THREE.DirectionalLight(0xffffff, 1.2));
             
-            // CONTAINER FOR TURNTABLE SPIN
             modelGroup = new THREE.Group();
             scene.add(modelGroup);
 
@@ -750,14 +772,10 @@ Fierce as thunder. Fast as lightning.</p>
 
             new THREE.GLTFLoader().load(MODEL_URL, (gltf) => {
                 carModel = gltf.scene;
-
-                // INITIAL FIX INSIDE GROUP
                 carModel.rotation.x = -Math.PI / 2;
-
                 const box = new THREE.Box3().setFromObject(carModel);
                 const center = box.getCenter(new THREE.Vector3());
                 carModel.position.sub(center);
-                
                 modelGroup.add(carModel);
                 document.getElementById('car-loader').style.display = 'none';
             });
@@ -766,10 +784,8 @@ Fierce as thunder. Fast as lightning.</p>
 
         function rotateModel(axis) {
             if (!carModel) return;
-            // Rotate the car relative to its own center
             if (axis === 'x') carModel.rotation.x += Math.PI / 2;
             if (axis === 'z') carModel.rotation.z += Math.PI / 2;
-            
             const box = new THREE.Box3().setFromObject(carModel);
             const center = box.getCenter(new THREE.Vector3());
             carModel.position.set(0,0,0);
@@ -787,7 +803,6 @@ Fierce as thunder. Fast as lightning.</p>
 
         function animate() { 
             requestAnimationFrame(animate); 
-            // ROTATE THE GROUP (TURNTABLE)
             if (modelGroup && (Date.now() - lastInt > 3000)) modelGroup.rotation.y += 0.003; 
             controls.update(); 
             renderer.render(scene, camera); 
