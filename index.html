@@ -501,40 +501,22 @@
             font-style: italic; color: var(--taranis-gold); opacity: 0.6;
         }
 
-        /* MODEL ROTATION BUTTONS */
         .model-controls {
-            position: absolute;
-            bottom: 120px;
-            right: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            z-index: 100;
+            position: absolute; bottom: 120px; right: 20px;
+            display: flex; flex-direction: column; gap: 10px; z-index: 100;
         }
 
         .control-btn {
-            background: rgba(0, 30, 67, 0.8);
-            border: 1px solid var(--taranis-gold);
-            color: var(--taranis-gold);
-            padding: 8px 12px;
-            font-family: var(--font-heading);
-            font-size: 0.65rem;
-            cursor: pointer;
-            transition: var(--transition);
+            background: rgba(0, 30, 67, 0.8); border: 1px solid var(--taranis-gold);
+            color: var(--taranis-gold); padding: 8px 12px; font-family: var(--font-heading);
+            font-size: 0.65rem; cursor: pointer; transition: var(--transition);
         }
 
-        .control-btn:hover {
-            background: var(--taranis-gold);
-            color: var(--taranis-navy);
-        }
+        .control-btn:hover { background: var(--taranis-gold); color: var(--taranis-navy); }
 
         .video-section {
-            height: 100vh;
-            position: relative;
-            overflow: hidden;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            height: 100vh; position: relative; overflow: hidden;
+            display: flex; justify-content: center; align-items: center;
         }
 
         #video-background {
@@ -641,15 +623,8 @@
             <span class="hero-overline">TARANIS RACING · SEASON 2025/26</span>
             <h2 class="hero-headline" style="font-size: 3rem;">THE <span>MACHINE</span></h2>
         </div>
+        <div id="three-container"><div class="loading-overlay" id="car-loader"><div class="spinner"></div><p>LOADING TARANIS...</p></div></div>
         
-        <div id="three-container">
-            <div class="loading-overlay" id="car-loader">
-                <div class="spinner"></div>
-                <p>LOADING TARANIS...</p>
-            </div>
-        </div>
-
-        <!-- NEW CALIBRATION BUTTONS -->
         <div class="model-controls">
             <button class="control-btn" onclick="rotateModel('x')">ROTATE X (FLIP)</button>
             <button class="control-btn" onclick="rotateModel('z')">ROTATE Z (LEVEL)</button>
@@ -711,7 +686,7 @@
 
         const textElement = document.getElementById('typewriter');
         const phrases = ["As Fierce As Thunder.", "As Fast As Lightning.", "Engineering Excellence."];
-        let pIdx = 0, cIdx = 0, isDeleting = false;
+        let pIdx = 0, charIdx = 0, isDeleting = false;
         function type() {
             const current = phrases[pIdx];
             textElement.textContent = isDeleting ? current.substring(0, charIdx - 1) : current.substring(0, charIdx + 1);
@@ -721,7 +696,6 @@
             else if (isDeleting && charIdx === 0) { isDeleting = false; pIdx = (pIdx + 1) % phrases.length; speed = 500; }
             setTimeout(type, speed);
         }
-        let charIdx = 0;
         type();
 
         const stats = document.querySelectorAll('.stat-number');
@@ -739,7 +713,7 @@
 
         document.querySelectorAll('.card').forEach(c => { new IntersectionObserver((e) => { if(e[0].isIntersecting) c.classList.add('visible'); }, {threshold: 0.1}).observe(c); });
 
-        let scene, camera, renderer, controls, carModel, lastInt = Date.now();
+        let scene, camera, renderer, controls, carModel, modelGroup, lastInt = Date.now();
 
         function initThree() {
             const container = document.getElementById('three-container');
@@ -750,6 +724,11 @@
             renderer.setSize(container.clientWidth, container.clientHeight);
             container.appendChild(renderer.domElement);
             scene.add(new THREE.AmbientLight(0x4040ff, 0.4), new THREE.DirectionalLight(0xffffff, 1.2));
+            
+            // CONTAINER FOR TURNTABLE SPIN
+            modelGroup = new THREE.Group();
+            scene.add(modelGroup);
+
             controls = new THREE.OrbitControls(camera, renderer.domElement);
             controls.enableDamping = true;
             controls.addEventListener('start', () => lastInt = Date.now());
@@ -757,22 +736,22 @@
             new THREE.GLTFLoader().load(MODEL_URL, (gltf) => {
                 carModel = gltf.scene;
 
-                // AUTOMATIC ORIENTATION FIX
+                // INITIAL FIX INSIDE GROUP
                 carModel.rotation.x = -Math.PI / 2;
 
                 const box = new THREE.Box3().setFromObject(carModel);
                 const center = box.getCenter(new THREE.Vector3());
                 carModel.position.sub(center);
                 
-                scene.add(carModel);
+                modelGroup.add(carModel);
                 document.getElementById('car-loader').style.display = 'none';
             });
             animate();
         }
 
-        // ROTATION HELPER FUNCTIONS
         function rotateModel(axis) {
             if (!carModel) return;
+            // Rotate the car relative to its own center
             if (axis === 'x') carModel.rotation.x += Math.PI / 2;
             if (axis === 'z') carModel.rotation.z += Math.PI / 2;
             
@@ -780,19 +759,21 @@
             const center = box.getCenter(new THREE.Vector3());
             carModel.position.set(0,0,0);
             carModel.position.sub(center);
-            lastInt = Date.now(); // Pause auto-rotation
+            lastInt = Date.now();
         }
 
         function resetModel() {
             if (!carModel) return;
             carModel.rotation.set(-Math.PI / 2, 0, 0);
+            modelGroup.rotation.set(0,0,0);
             camera.position.set(4, 2, 4);
             controls.reset();
         }
 
         function animate() { 
             requestAnimationFrame(animate); 
-            if (carModel && (Date.now() - lastInt > 3000)) carModel.rotation.y += 0.003; 
+            // ROTATE THE GROUP (TURNTABLE)
+            if (modelGroup && (Date.now() - lastInt > 3000)) modelGroup.rotation.y += 0.003; 
             controls.update(); 
             renderer.render(scene, camera); 
         }
